@@ -1,0 +1,24 @@
+﻿@using ShartCoding.GameMaker;
+@using ShartCoding.GameMaker.Engine;
+@inherits Sandbox.UI.Panel
+
+<root>
+	<div class="title" onclick="@NewProject">Penis cock</div>
+</root>
+
+<style lang="scss">
+	WelcomePanel {
+		//
+	}
+</style>
+
+@code {
+
+	public GameMakerComponent GameMakerComponent { get; set; }
+
+	private void NewProject()
+	{
+		GameMakerComponent.CreateNewProject( new GameMakerProjectDescription( "untitled", "untitled", "" ) );
+	}
+
+}

@@ -1,0 +1,25 @@
+@using Sandbox;
+@using ShartCoding.GameMaker.Engine;
+@inherits PanelComponent
+
+<root>
+	@if ( GameMakerComponent.Current is null )
+	{
+		<WelcomePanel GameMakerComponent="@GameMakerComponent"/>
+	}
+	else
+	{
+		<ProjectEditorPanel GameMakerComponent="@GameMakerComponent"/>
+	}
+</root>
+
+@code
+{
+
+	[Property] public GameMakerComponent GameMakerComponent;
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( GameMakerComponent.Current );
+}

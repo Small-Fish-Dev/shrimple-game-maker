@@ -1,0 +1,22 @@
+﻿@using System
+@using ShartCoding.GameMaker.Engine;
+@inherits Sandbox.UI.Panel
+
+<root>
+	<div class="title" onclick="@( () => GameMakerComponent.Start() )">Start</div>
+	<div class="title" onclick="@( () => GameMakerComponent.Stop() )">Stop</div>
+</root>
+
+<style lang="scss">
+	ProjectEditorPanel {
+		//
+	}
+</style>
+
+@code {
+
+	public GameMakerComponent GameMakerComponent { get; set; }
+
+	protected override int BuildHash() => HashCode.Combine( GameMakerComponent.Playing );
+
+}
