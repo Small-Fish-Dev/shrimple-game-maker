@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using ShartCoding.GameMaker.Engine;
+using ShartCoding.ShartCode;
 
 namespace ShartCoding.GameMaker;
 
@@ -8,6 +9,8 @@ public class ActorTemplate
 	public string Name { get; set; }
 
 	public ActorAppearance Appearance { get; set; }
+	
+	public ShartCodeObject CodeObject { get; set; }
 
 	public GameObject Make()
 	{
@@ -15,7 +18,7 @@ public class ActorTemplate
 
 		// TODO:
 		var actorComponent = go.Components.Create<ActorComponent>();
-		actorComponent.SetAppearance( Appearance );
+		actorComponent.SetTemplate( this );
 
 		return go;
 	}

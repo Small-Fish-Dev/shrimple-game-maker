@@ -5,6 +5,8 @@ namespace ShartCoding.GameMaker.ActorAppearances;
 
 public class TerryAppearance : ActorAppearance
 {
+	// TODO: citizen model, animation helper, outfit
+	
 	public override void Dress( ActorComponent actor )
 	{
 		throw new System.NotImplementedException();

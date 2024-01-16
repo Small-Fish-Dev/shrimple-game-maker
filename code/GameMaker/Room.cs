@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sandbox;
+using ShartCoding.ShartCode;
 
 namespace ShartCoding.GameMaker;
 
@@ -14,12 +15,14 @@ public class Room
 {
 	public string Name { get; set; }
 
-	public Angles SunAngle { get; set; } = new Angles( 35, 50, 0 );
+	public Angles SunAngle { get; set; } = new( 35, 50, 0 );
 	public Color SunlightColor { get; set; } = Color.FromRgba( 0xE9FAFFFF );
 	public Color SkyColor { get; set; } = Color.FromRgba( 0x0F1315FF );
 	public bool CastShadows { get; set; } = true;
 
 	public List<RoomObject> RoomObjects { get; set; }
+
+	public ShartCodeObject Object { get; set; } = new();
 
 	public void Populate( GameObject root )
 	{

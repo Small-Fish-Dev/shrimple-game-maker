@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using ShartCoding.ShartCode;
 
 namespace ShartCoding.GameMaker.Engine;
 
@@ -9,9 +10,19 @@ public class GameMakerComponent : Component
 	[Property] public GameObject RoomPreviewStorage;
 	[Property] public bool Playing { get; private set; } = false;
 	[Property] public DirectionalLight Sun;
+	[Property] public CameraComponent EditorCamera;
+	[Property] public CameraComponent GameCamera;
 
 	public GameMakerProject Current { get; private set; }
 	public Room CurrentEditorRoom { get; private set; }
+	public ShartCodeContext GlobalContext { get; private set; } = new();
+
+	protected override void OnAwake()
+	{
+		base.OnAwake();
+
+		Scene.GetSystem<ActorSystem>().Register( this );
+	}
 
 	public void CreateNewProject( GameMakerProjectDescription description )
 	{
@@ -21,15 +32,27 @@ public class GameMakerComponent : Component
 		Current.Preload().Wait();
 		Log.Info( Current );
 
-		CleanUp();
+		ToEditor();
 		SetEditorRoom( Current.InitialRoom );
 	}
 
 	// Clean up the state
-	private void CleanUp()
+	private void ToEditor()
 	{
 		RoomStorage.Clear();
 		RoomPreviewStorage.Enabled = true;
+
+		EditorCamera.Enabled = true;
+		GameCamera.Enabled = false;
+	}
+
+	private void ToGame()
+	{
+		RoomPreviewStorage.Enabled = false;
+		SetRoom( Current.InitialRoom );
+
+		GameCamera.Enabled = true;
+		EditorCamera.Enabled = false;
 	}
 
 	public void Start()
@@ -39,10 +62,9 @@ public class GameMakerComponent : Component
 
 		Playing = true;
 
-		Assert.AreNotEqual( Current, null );
+		Assert.NotNull( Current );
 
-		RoomPreviewStorage.Enabled = false;
-		SetRoom( Current.InitialRoom );
+		ToGame();
 	}
 
 	public void Stop()
@@ -52,9 +74,9 @@ public class GameMakerComponent : Component
 
 		Playing = false;
 
-		Assert.AreNotEqual( Current, null );
+		Assert.NotNull( Current );
 
-		CleanUp();
+		ToEditor();
 	}
 
 	protected void SetSunSettings( Room room )

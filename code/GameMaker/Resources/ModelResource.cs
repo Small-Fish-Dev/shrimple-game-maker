@@ -20,10 +20,9 @@ public class ModelResource : AssetPartyResource
 
 		Assert.AreEqual( Package.PackageType, Package.Type.Model );
 
-		var mountedPackage = await Package.MountAsync();
+		_ = await Package.MountAsync();
 
 		var path = Package.GetMeta<string>( "PrimaryAsset" ) ?? Package.GetMeta<string>( "SingleAssetSource" );
-		Log.Info( path );
 		Assert.AreNotEqual( path, default );
 		Model = Model.Load( path );
 	}

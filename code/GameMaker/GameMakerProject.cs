@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using Sandbox.Diagnostics;
 using ShartCoding.GameMaker.ActorAppearances;
 using ShartCoding.GameMaker.Resources;
+using ShartCoding.ShartCode;
+using ShartCoding.ShartCode.CodeBlocks;
+using ShartCoding.ShartCode.Types;
 
 namespace ShartCoding.GameMaker;
 
@@ -30,12 +33,28 @@ public class GameMakerProject
 			return Rooms[InitialRoomId];
 		}
 	}
-    
+
 	public static GameMakerProject Empty( GameMakerProjectDescription description )
 	{
 		var modelResource = new ModelResource( "fish.hs_hampter" );
 		var exampleActor =
-			new ActorTemplate { Name = "Example", Appearance = new AssetPartyModelAppearance( modelResource ) };
+			new ActorTemplate
+			{
+				Name = "Example",
+				Appearance = new AssetPartyModelAppearance( modelResource ),
+				CodeObject = new ShartCodeObject
+				{
+					Fields = new Dictionary<string, ShartCodeType>(),
+					Functions = new Dictionary<string, ShartCodeFunction>
+					{
+						{
+							"Tick", new ShartCodeFunction( "Tick",
+								new Dictionary<string, ShartCodeType>(),
+								new List<ShartCodeBlock> { new HelloWorldBlock() } )
+						}
+					}
+				}
+			};
 
 		return new GameMakerProject
 		{

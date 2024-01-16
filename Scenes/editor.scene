@@ -17,7 +17,7 @@
         },
         {
           "__version": 0,
-          "__type": "EditorPanel",
+          "__type": "GameMakerPanel",
           "__enabled": true,
           "GameMakerComponent": "cb7fb911-6c0c-46f5-a91a-a9e5f6d69670"
         }
@@ -32,6 +32,8 @@
           "__version": 0,
           "__type": "GameMakerComponent",
           "__enabled": true,
+          "EditorCamera": "c95709fe-2d38-4c37-a5c1-f9dc1c6c8f5f",
+          "GameCamera": "c7efb73b-74b1-4adc-ab44-206ac5960a98",
           "RoomPreviewStorage": "5fb0d355-8ef5-4898-a059-815b8909f833",
           "RoomStorage": "5b97904b-d9c4-498e-9a6e-2935a1bf5af9",
           "Sun": "9f3106a2-d105-4d32-860b-aec7e583dab5",
@@ -63,33 +65,60 @@
               "SkyColor": "0.05882,0.07451,0.08235,1"
             }
           ]
-        }
-      ]
-    },
-    {
-      "Id": "c95709fe-2d38-4c37-a5c1-f9dc1c6c8f5f",
-      "Name": "Camera",
-      "Position": "-100,0,0",
-      "Tags": "maincamera",
-      "Enabled": true,
-      "Components": [
+        },
         {
-          "__version": 0,
-          "__type": "CameraComponent",
-          "__enabled": true,
-          "BackgroundColor": "0.33333,0.46275,0.52157,1",
-          "ClearFlags": "All",
-          "FieldOfView": 60,
-          "IsMainCamera": true,
-          "Orthographic": false,
-          "OrthographicHeight": 1204,
-          "Priority": 1,
-          "RenderExcludeTags": "",
-          "RenderTags": "",
-          "TargetEye": "None",
-          "Viewport": "0,0,1,1",
-          "ZFar": 10000,
-          "ZNear": 10
+          "Id": "c95709fe-2d38-4c37-a5c1-f9dc1c6c8f5f",
+          "Name": "EditorCamera",
+          "Position": "-100,0,0",
+          "Tags": "maincamera",
+          "Enabled": true,
+          "Components": [
+            {
+              "__version": 0,
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "ClearFlags": "All",
+              "FieldOfView": 60,
+              "IsMainCamera": true,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "Priority": 1,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
+              "TargetEye": "None",
+              "Viewport": "0,0,1,1",
+              "ZFar": 10000,
+              "ZNear": 10
+            }
+          ]
+        },
+        {
+          "Id": "c7efb73b-74b1-4adc-ab44-206ac5960a98",
+          "Name": "GameCamera",
+          "Position": "-100,0,0",
+          "Tags": "maincamera",
+          "Enabled": true,
+          "Components": [
+            {
+              "__version": 0,
+              "__type": "CameraComponent",
+              "__enabled": true,
+              "BackgroundColor": "0.39608,0.52157,0.33333,1",
+              "ClearFlags": "All",
+              "FieldOfView": 60,
+              "IsMainCamera": true,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "Priority": 1,
+              "RenderExcludeTags": "",
+              "RenderTags": "",
+              "TargetEye": "None",
+              "Viewport": "0,0,1,1",
+              "ZFar": 10000,
+              "ZNear": 10
+            }
+          ]
         }
       ]
     }
