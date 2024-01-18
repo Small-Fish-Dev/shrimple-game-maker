@@ -90,6 +90,14 @@
               "Viewport": "0,0,1,1",
               "ZFar": 10000,
               "ZNear": 10
+            },
+            {
+              "__version": 0,
+              "__type": "EditorCameraComponent",
+              "__enabled": true,
+              "Captured": false,
+              "FastSpeed": 40,
+              "Speed": 20
             }
           ]
         },

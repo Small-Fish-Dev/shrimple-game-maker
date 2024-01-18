@@ -10,7 +10,7 @@ public class GameMakerComponent : Component
 	[Property] public GameObject RoomPreviewStorage;
 	[Property] public bool Playing { get; private set; } = false;
 	[Property] public DirectionalLight Sun;
-	[Property] public CameraComponent EditorCamera;
+	[Property] public EditorCameraComponent EditorCamera;
 	[Property] public CameraComponent GameCamera;
 
 	public GameMakerProject Current { get; private set; }

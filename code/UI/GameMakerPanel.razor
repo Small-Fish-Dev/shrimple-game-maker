@@ -1,3 +1,5 @@
+@using System
+@using System.Collections.Generic
 @using Sandbox;
 @using Sandbox.UI
 @using ShartCoding.GameMaker.Engine;
@@ -13,15 +15,68 @@
 	{
 		<ProjectEditorPanel GameMakerComponent="@GameMakerComponent"/>
 	}
+
+	<div class="modal-queue">
+		@foreach ( var modal in Modals )
+		{
+			<div class="modal pointer-events">
+				<div class="window window-center @( modal.StyleClass )">
+					<h1>@modal.Title</h1>
+					<div>@modal.Text</div>
+					<div class="button-group">
+						@foreach ( var button in modal.Buttons )
+						{
+							<button onclick="@( () => { modal.Callback?.Invoke( button ); Modals.Dequeue(); } )">
+								@button
+							</button>
+						}
+					</div>
+				</div>
+			</div>
+		}
+	</div>
 </root>
 
 @code
 {
+	public struct Modal
+	{
+		public enum ModalStyle
+		{
+			Regular,
+			Success,
+			Error
+		}
+
+		public string Title;
+		public string Text;
+		public ModalStyle Style;
+		public string[] Buttons;
+		public Action<string> Callback;
+
+		private static readonly Dictionary<ModalStyle, string> _styleToClass = new() { { ModalStyle.Regular, "trim-blue" }, { ModalStyle.Success, "trim-green" }, { ModalStyle.Error, "trim-red" } };
+
+		public string StyleClass => _styleToClass[Style];
+	}
 
 	[Property] public GameMakerComponent GameMakerComponent;
+
+	public static GameMakerPanel The { get; private set; }
+
+	private Queue<Modal> Modals = new();
+
+	public GameMakerPanel()
+	{
+		The = this;
+	}
+
+	public void PushModal( Modal modal )
+	{
+		Modals.Enqueue( modal );
+	}
 
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
 	/// </summary>
-	protected override int BuildHash() => System.HashCode.Combine( GameMakerComponent.Current );
+	protected override int BuildHash() => System.HashCode.Combine( GameMakerComponent.Current, Modals.Count );
 }

@@ -1,15 +1,95 @@
 ﻿@using System
-@using ShartCoding.GameMaker.Engine;
+@using Sandbox
+@using ShartCoding.GameMaker.Engine
+@using Sandbox.UI
 @inherits Sandbox.UI.Panel
 
-<root>
-	<div class="title" onclick="@( () => GameMakerComponent.Start() )">Start</div>
-	<div class="title" onclick="@( () => GameMakerComponent.Stop() )">Stop</div>
+<root class="@( FreeCam ? "" : "pointer-events" )">
+	<div class="editor window window-column @( _hidden ? "closed" : "open" )">
+		<div class="header">
+			<span style="flex-grow: 1"></span>
+			<span>TODO: iconify doesn't work</span>
+			<button class="play-stop square @( GameMakerComponent.Playing ? "danger" : "accent" )" onclick="@TogglePlaying">
+				@if ( GameMakerComponent.Playing )
+				{
+					<iconify icon="material-symbols:stop"/>
+				}
+				else
+				{
+					<iconify icon="material-symbols:play-arrow"/>
+				}
+			</button>
+			<button class="square" onclick="@( () => _hidden = !_hidden )">
+				@if ( _hidden )
+				{
+					<iconify icon="material-symbols:expand-content"/>
+					@*<span>Show</span>*@
+				}
+				else
+				{
+					<iconify icon="material-symbols:collapse-content"/>
+					@*<span>Hide</span>*@
+				}
+			</button>
+		</div>
+		<div class="body">
+			<div class="row">
+				<label>Project name: </label>
+				@* TODO: binding *@
+				<TextEntry style="flex-grow: 1" Text="@( GameMakerComponent.Current.Description.Name )" OnTextEdited="@( SetName )"/>
+			</div>
+		</div>
+	</div>
 </root>
 
 <style lang="scss">
 	ProjectEditorPanel {
-		//
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		
+		align-items: flex-start;
+		justify-content: flex-start;
+		
+		padding: 10px;
+  
+		.window.editor {			
+			.header {
+				flex-shrink: 0;
+			
+				flex-direction: row;
+				flex-wrap: nowrap;
+				
+				justify-content: flex-start;
+				align-items: stretch;
+			
+				height: 32px;
+				max-height: 32px;
+				min-height: 32px;
+			}
+		
+			.body {
+				flex-grow: 1;
+			
+				flex-direction: column;
+				flex-wrap: nowrap;
+				
+				justify-content: flex-start;
+				align-items: stretch;
+			}
+			
+			&.open {
+				min-width: 25vw;
+			}
+			
+			&.closed {
+				.body {
+					display: none;
+				}
+			}
+		}
 	}
 </style>
 
@@ -17,6 +97,31 @@
 
 	public GameMakerComponent GameMakerComponent { get; set; }
 
-	protected override int BuildHash() => HashCode.Combine( GameMakerComponent.Playing );
+	private bool FreeCam => GameMakerComponent.EditorCamera.Captured && !GameMakerComponent.Playing;
+
+	private bool _hidden;
+
+	private void TogglePlaying()
+	{
+		if ( GameMakerComponent.Playing )
+			GameMakerComponent.Stop();
+		else
+			GameMakerComponent.Start();
+	}
+
+	private void SetName( string newName )
+	{
+		GameMakerComponent.Current.Description.Name = newName;
+	}
+
+	protected override void OnMouseDown( MousePanelEvent e )
+	{
+		if ( e.MouseButton == MouseButtons.Right )
+		{
+			GameMakerComponent.EditorCamera.Captured = true;
+		}
+	}
+
+	protected override int BuildHash() => HashCode.Combine( GameMakerComponent.Playing, _hidden, FreeCam );
 
 }

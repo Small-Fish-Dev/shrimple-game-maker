@@ -1,20 +1,71 @@
-﻿@using ShartCoding.GameMaker;
+﻿@using ShartCoding;
+@using ShartCoding.GameMaker;
 @using ShartCoding.GameMaker.Engine;
 @inherits Sandbox.UI.Panel
 
-<root>
-	<div class="title" onclick="@NewProject">Penis cock</div>
+<root class="pointer-events window window-center trim-blue">
+	<h1>WELCOME TO</h1>
+	<h1>SHRIMPLE GAME MAKER</h1>
+	<div class="button-group">
+		<button class="accent" onclick="@NewProject">
+			New project
+		</button>
+		<button onclick="@( () => GameMakerPanel.The.PushModal( DiscordModal ) )">
+			Join our Discord
+		</button>
+		<button onclick="@( () => GameMakerPanel.The.PushModal( WebsiteModal ) )">
+			Visit our website
+		</button>
+	</div>
+	<h1>PLEASE NOTE: At the moment, you cannot save your projects. Stay tuned for updates!</h1>
+	@if ( GameMakerProjectRepository.The.All.Count > 0 )
+	{
+		<span>Or select one of the existing projects:</span>
+		@foreach ( var project in GameMakerProjectRepository.The.All )
+		{
+			<div>
+				@project.Name
+				<div class="button-group">
+					<button onclick="@( () => GameMakerProjectRepository.The.Load( project ) )">Load</button>
+					<button onclick="@( () => GameMakerPanel.The.PushModal( new GameMakerPanel.Modal { Title = "Are you sure?", Buttons = new[] { "Yes", "No" } } ) )">
+						Delete
+					</button>
+				</div>
+			</div>
+		}
+	}
 </root>
 
 <style lang="scss">
 	WelcomePanel {
-		//
+		flex-direction: column;
+		flex-wrap: nowrap;
+		text-align: center;
+		gap: 20px;
 	}
 </style>
 
 @code {
 
 	public GameMakerComponent GameMakerComponent { get; set; }
+
+	private readonly GameMakerPanel.Modal DiscordModal = new()
+	{
+		Title = "Discord",
+		Text = Constants.Discord,
+		Style = GameMakerPanel.Modal.ModalStyle.Regular,
+		Buttons = new[] { "Ok" },
+		Callback = _ => { }
+	};
+
+	private readonly GameMakerPanel.Modal WebsiteModal = new()
+	{
+		Title = "Website",
+		Text = Constants.Website,
+		Style = GameMakerPanel.Modal.ModalStyle.Regular,
+		Buttons = new[] { "Ok" },
+		Callback = _ => { }
+	};
 
 	private void NewProject()
 	{

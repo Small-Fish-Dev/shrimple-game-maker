@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ShartCoding.ShartCode;
+﻿namespace ShartCoding.ShartCode;
 
 public class ShartCodeVariable
 {

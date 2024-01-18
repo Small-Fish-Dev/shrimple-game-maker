@@ -1,22 +1,43 @@
-GameMakerPanel
-{
-	position: absolute;
-	top: 0;
-	left: 0;
-	background-color: #444;
-	justify-content: center;
-	align-items: center;
-	font-weight: bold;
-	border-radius: 20px;
-	
-	pointer-events: all;
-	
-	gap: 20px;
+﻿@import "/ui/Common.scss";
 
-	.title
-	{
-		font-size: 25px;
-		font-family: Poppins;
-		color: #fff;
-	}
+GameMakerPanel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  justify-content: center;
+  align-items: center;
+
+  .modal-queue {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+
+    .modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      justify-content: center;
+      align-items: center;
+
+      background-color: rgba(0, 0, 0, 0.5);
+
+      pointer-events: all;
+
+      .window {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        text-align: center;
+        gap: 20px;
+      }
+    }
+  }
 }

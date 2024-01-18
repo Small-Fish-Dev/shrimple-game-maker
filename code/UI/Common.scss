@@ -1,0 +1,128 @@
+﻿.window {
+  padding: 20px;
+  border-radius: 10px;
+  
+  color: white;
+  background-color: rgba(34, 34, 34, 0.99);
+
+  opacity: 0.5;
+
+  &.trim-blue {
+    // TODO: https://github.com/Facepunch/sbox-issues/issues/3649
+    //box-shadow: inset #2798e5 0 0 20px 0;
+    box-shadow: 0 0 20px 0 #2798e5;
+  }
+
+  &.trim-green {
+    //box-shadow: inset #56c750 0 0 20px 0;
+    box-shadow: 0 0 20px 0 #56c750;
+  }
+
+  &.trim-red {
+    //box-shadow: inset #c75050 0 0 20px 0;
+    box-shadow: 0 0 20px 0 #c75050;
+  }
+  
+  &.pointer-events {
+    pointer-events: all;
+    opacity: 1;
+  }
+  
+  &.window-center {
+    justify-content: center;
+    align-items: center;
+  }
+  
+  &.window-column {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+}
+
+.pointer-events .window {
+  pointer-events: all;
+  opacity: 1;
+}
+
+button {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+
+  padding: 8px;
+  border-radius: 8px;
+
+  background-color: #2798e5;
+  color: white;
+  
+  min-width: 100px;
+  
+  &.square {
+    aspect-ratio: 1;
+    min-width: 32px;
+  }
+
+  &:hover {
+    background-color: #4cb1ff;
+  }
+
+  &:active {
+    background-color: #2284c7;
+  }
+  
+  &.accent {
+    font-weight: bold;
+    
+    background-color: #56c750;
+
+    &:hover {
+      background-color: #61e35b;
+    }
+
+    &:active {
+      background-color: #49a844;
+    }
+  }
+
+  &.danger {
+    font-weight: bold;
+
+    background-color: #c75050;
+
+    &:hover {
+      background-color: #e35b5b;
+    }
+
+    &:active {
+      background-color: #a84444;
+    }
+  }
+}
+
+.button-group {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 4px;
+  
+  border-radius: 8px;
+  
+  overflow: hidden;
+  
+  button {
+    border-radius: 0;
+  }
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.row {
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
