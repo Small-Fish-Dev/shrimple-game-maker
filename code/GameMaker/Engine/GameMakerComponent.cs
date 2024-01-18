@@ -17,6 +17,28 @@ public class GameMakerComponent : Component
 	public Room CurrentEditorRoom { get; private set; }
 	public ShartCodeContext GlobalContext { get; private set; } = new();
 
+	[Property]
+	public GameObject EditorCurrentSelected => _editorRayLastHighlight.IsValid() ? _editorRayLastHighlight : null;
+
+	public Ray? EditorRay
+	{
+		get => _editorRay;
+		set
+		{
+			bool equal = _editorRay == value;
+			_editorRay = value;
+
+			if ( !equal )
+				if ( _editorRay is null )
+					EditorRayOff();
+				else
+					EditorRayTrace();
+		}
+	}
+
+	private Ray? _editorRay;
+	private GameObject _editorRayLastHighlight;
+
 	protected override void OnAwake()
 	{
 		base.OnAwake();
@@ -99,6 +121,7 @@ public class GameMakerComponent : Component
 		foreach ( var roomObject in room.RoomObjects )
 		{
 			var go = new GameObject();
+			go.Tags.Add( "actor" );
 			// TODO: make a preview object with gizmo
 			var gizmo = go.Components.Create<RoomObjectGizmoComponent>();
 			gizmo.RoomObject = roomObject;
@@ -118,5 +141,33 @@ public class GameMakerComponent : Component
 		room.Populate( RoomStorage );
 
 		SetSunSettings( room );
+	}
+
+	private void EditorRayTrace()
+	{
+		if ( EditorRay is null )
+			return;
+
+		var result = Scene.Trace.UseRenderMeshes().Ray( EditorRay.Value, 1000 ).WithTag( "actor" ).Run();
+		var go = result.GameObject;
+		if ( go != _editorRayLastHighlight )
+		{
+			EditorRayOff();
+
+			if ( go != null )
+			{
+				go.Components.Get<ModelRenderer>().Tint = Color.Red;
+				_editorRayLastHighlight = go;
+			}
+		}
+	}
+
+	private void EditorRayOff()
+	{
+		if ( _editorRayLastHighlight.IsValid() )
+		{
+			_editorRayLastHighlight.Components.Get<ModelRenderer>().Tint = Color.White;
+			_editorRayLastHighlight = null;
+		}
 	}
 }

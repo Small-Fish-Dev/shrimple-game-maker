@@ -54,6 +54,11 @@
 		justify-content: flex-start;
 		
 		padding: 10px;
+		
+		pointer-events: none;
+		&.pointer-events {
+			pointer-events: all;
+		}
   
 		.window.editor {			
 			.header {
@@ -119,7 +124,21 @@
 		if ( e.MouseButton == MouseButtons.Right )
 		{
 			GameMakerComponent.EditorCamera.Captured = true;
+			StateHasChanged();
 		}
+
+		// base.OnMouseDown( e );
+	}
+
+	protected override void OnClick( MousePanelEvent e )
+	{
+		base.OnClick( e );
+
+		if ( e.Target != this )
+			return;
+
+		InputFocus.Clear( null );
+		GameMakerComponent.EditorRay = Scene.Camera.ScreenPixelToRay( MousePosition );
 	}
 
 	protected override int BuildHash() => HashCode.Combine( GameMakerComponent.Playing, _hidden, FreeCam );
