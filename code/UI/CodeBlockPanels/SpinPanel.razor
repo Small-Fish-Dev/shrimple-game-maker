@@ -2,17 +2,16 @@
 @using ShartCoding.ShartCode
 @using ShartCoding.ShartCode.CodeBlocks
 @namespace ShartCoding.UI.CodeBlockPanels
-@inherits Sandbox.UI.Panel
-@implements ICodeBlockPanel
+@inherits AbstractCodeBlockPanel
 
 <root class="codeblock">
 	Spin
-	<span>Speed: <TextEntry Numeric Text="@( $"{_spinBlock.Speed}" )" OnTextEdited="@( SetSpeed )"></TextEntry></span>
+	<span class="typepanel">Speed: <TextEntry Numeric Text="@( $"{_spinBlock.Speed}" )" OnTextEdited="@( SetSpeed )"></TextEntry></span>
 </root>
 
 @code
 {
-	public ShartCodeBlock Block { get; set; }
+	public override ShartCodeBlock Block { get; set; }
 
 	private SpinBlock _spinBlock => Block as SpinBlock;
 

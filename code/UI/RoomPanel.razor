@@ -6,9 +6,12 @@
 @inherits Sandbox.UI.Panel
 
 <root class="window window-column">
-	<button class="square" onclick="@( () => AddRoomObjectDialog() )">
-		<iconify icon="material-symbols:person-add"/>
-	</button>
+	<div class="row" style="gap: 5px">
+		<h4 style="flex-grow: 1">Room</h4>
+		<button class="square" onclick="@( () => AddRoomObjectDialog() )">
+			<iconify icon="material-symbols:person-add"/>
+		</button>
+	</div>
 	<div class="room-objects">
 		@foreach ( var roomObject in Room.RoomObjects )
 		{

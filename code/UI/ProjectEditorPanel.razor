@@ -44,6 +44,11 @@
 		@if ( GameMakerComponent.EditorCurrentSelected != null )
 		{
 			<RoomObjectPanel RoomObject="@GameMakerComponent.EditorCurrentSelected.RoomObject"/>
+			
+			@if ( GameMakerComponent.EditorCurrentSelected.RoomObject.Actor != null )
+			{
+				<ActorPanel Actor="@GameMakerComponent.EditorCurrentSelected.RoomObject.Actor"/>
+			}
 		}
 	}
 </root>

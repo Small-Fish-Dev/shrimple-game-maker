@@ -1,11 +1,10 @@
 ﻿@namespace ShartCoding.UI.CodeBlockPanels
-@inherits Sandbox.UI.Panel
+@inherits AbstractCodeBlockPanel
 @using ShartCoding.ShartCode
-@implements ICodeBlockPanel
 
 @* TODO: *@
 
 @code
 {
-	public ShartCodeBlock Block { get; set; }
+	public override ShartCodeBlock Block { get; set; }
 }
