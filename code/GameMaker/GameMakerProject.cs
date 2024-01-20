@@ -48,9 +48,14 @@ public class GameMakerProject
 					Functions = new Dictionary<string, ShartCodeFunction>
 					{
 						{
-							"Tick", new ShartCodeFunction( "Tick",
+							"Spawn", new ShartCodeFunction( "Spawn",
 								new Dictionary<string, ShartCodeType>(),
 								new List<ShartCodeBlock> { new HelloWorldBlock() } )
+						},
+						{
+							"Tick", new ShartCodeFunction( "Tick",
+								new Dictionary<string, ShartCodeType>(),
+								new List<ShartCodeBlock> { new SpinBlock( 100 ) } )
 						}
 					}
 				}
@@ -63,14 +68,7 @@ public class GameMakerProject
 			Actors = new List<ActorTemplate> { exampleActor },
 			Rooms = new List<Room>
 			{
-				new()
-				{
-					Name = "First room",
-					RoomObjects = new List<RoomObject>
-					{
-						new() { Position = Vector3.Zero, Actor = exampleActor }
-					}
-				}
+				new(new List<RoomObject> { new(Vector3.Zero, exampleActor) }) { Name = "First room" }
 			}
 		};
 	}

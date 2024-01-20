@@ -1,0 +1,70 @@
+﻿@using System
+@using Sandbox
+@using ShartCoding.GameMaker
+@using ShartCoding.GameMaker.Engine
+@using ShartCoding.UI.CodeTypePanels
+@inherits Sandbox.UI.Panel
+
+<root class="window window-column">
+	<button class="square" onclick="@( () => AddRoomObjectDialog() )">
+		<iconify icon="material-symbols:person-add"/>
+	</button>
+	<div class="room-objects">
+		@foreach ( var roomObject in Room.RoomObjects )
+		{
+			<div class="actor @( IsRoomObjectSelected( roomObject ) ? "selected" : "" )" onclick="@( () => GameMakerComponent.EditorSearchRoomObject( roomObject ) )">
+				@roomObject.Name
+			</div>
+		}
+	</div>
+</root>
+
+<style>
+	RoomPanel {
+		gap: 10px;
+	
+		button.square {
+			width: 32px;
+		}
+	
+		.room-objects {
+			flex-direction: column;
+			flex-wrap: nowrap;
+			justify-content: flex-start;
+			align-items: stretch;
+			gap: 5px;
+		
+			.actor {
+				padding: 5px;
+				
+				border-radius: 5px;
+			
+				background-color: rgba(0, 0, 0, 0.25);
+			
+				&.selected {
+					background-color: rgba(76,177,255, 0.25);
+				}
+			}
+		}
+	}
+</style>
+
+@code {
+
+	public GameMakerComponent GameMakerComponent { get; set; }
+	public Room Room { get; set; }
+
+	private bool IsRoomObjectSelected( RoomObject roomObject ) => GameMakerComponent.EditorCurrentSelected != null
+	                                                              && GameMakerComponent.EditorCurrentSelected.RoomObject == roomObject;
+
+	private void AddRoomObjectDialog()
+	{
+		// TODO: an actual dialog
+		Room.Add( new RoomObject(
+			BBox.FromPositionAndSize( Vector3.Zero, 100 ).RandomPointInside,
+			Random.Shared.FromList( GameMakerComponent.Current.Actors ) ) );
+	}
+
+	protected override int BuildHash() => HashCode.Combine( Room, GameMakerComponent.EditorCurrentSelected );
+
+}

@@ -18,7 +18,8 @@ public class GameMakerComponent : Component
 	public ShartCodeContext GlobalContext { get; private set; } = new();
 
 	[Property]
-	public GameObject EditorCurrentSelected => _editorRayLastHighlight.IsValid() ? _editorRayLastHighlight : null;
+	public RoomObjectGizmoComponent EditorCurrentSelected =>
+		_editorRayLastHighlight.IsValid() ? _roRayLastHighlight : null;
 
 	public Ray? EditorRay
 	{
@@ -38,6 +39,7 @@ public class GameMakerComponent : Component
 
 	private Ray? _editorRay;
 	private GameObject _editorRayLastHighlight;
+	private RoomObjectGizmoComponent _roRayLastHighlight;
 
 	protected override void OnAwake()
 	{
@@ -114,22 +116,36 @@ public class GameMakerComponent : Component
 		if ( Current is null || Playing || CurrentEditorRoom == room )
 			return;
 
+		if ( CurrentEditorRoom != null )
+		{
+			CurrentEditorRoom.OnAdded = null;
+			CurrentEditorRoom.OnRemoved = null;
+		}
+
 		CurrentEditorRoom = room;
 
 		RoomPreviewStorage.Clear();
 
 		foreach ( var roomObject in room.RoomObjects )
 		{
-			var go = new GameObject();
-			go.Tags.Add( "actor" );
-			// TODO: make a preview object with gizmo
-			var gizmo = go.Components.Create<RoomObjectGizmoComponent>();
-			gizmo.RoomObject = roomObject;
-			roomObject.Actor.Appearance.DressGizmo( go );
-			go.SetParent( RoomPreviewStorage );
+			EditorMakeRoomObjectGizmo( roomObject );
 		}
 
+		CurrentEditorRoom.OnAdded = EditorMakeRoomObjectGizmo;
+		CurrentEditorRoom.OnRemoved = null; // TODO:
+
 		SetSunSettings( CurrentEditorRoom );
+	}
+
+	private void EditorMakeRoomObjectGizmo( RoomObject roomObject )
+	{
+		var go = new GameObject();
+		go.Tags.Add( "actor" );
+		// TODO: make a preview object with gizmo
+		var gizmo = go.Components.Create<RoomObjectGizmoComponent>();
+		gizmo.RoomObject = roomObject;
+		roomObject.Actor.Appearance.DressGizmo( go );
+		go.SetParent( RoomPreviewStorage );
 	}
 
 	public void SetRoom( Room room )
@@ -152,13 +168,7 @@ public class GameMakerComponent : Component
 		var go = result.GameObject;
 		if ( go != _editorRayLastHighlight )
 		{
-			EditorRayOff();
-
-			if ( go != null )
-			{
-				go.Components.Get<ModelRenderer>().Tint = Color.Red;
-				_editorRayLastHighlight = go;
-			}
+			EditorSetRoomObject( go );
 		}
 	}
 
@@ -168,6 +178,31 @@ public class GameMakerComponent : Component
 		{
 			_editorRayLastHighlight.Components.Get<ModelRenderer>().Tint = Color.White;
 			_editorRayLastHighlight = null;
+			_roRayLastHighlight = null;
+		}
+	}
+
+	private void EditorSetRoomObject( GameObject go )
+	{
+		EditorRayOff();
+
+		if ( go?.Components.Get<RoomObjectGizmoComponent>() is { } gizmoComponent )
+		{
+			go.Components.Get<ModelRenderer>().Tint = Color.Red;
+			_editorRayLastHighlight = go;
+			_roRayLastHighlight = gizmoComponent;
+		}
+	}
+
+	public void EditorSearchRoomObject( RoomObject roomObject )
+	{
+		foreach ( var ro in Scene.GetAllComponents<RoomObjectGizmoComponent>() )
+		{
+			if ( ro.RoomObject == roomObject )
+			{
+				EditorSetRoomObject( ro.GameObject );
+				return;
+			}
 		}
 	}
 }

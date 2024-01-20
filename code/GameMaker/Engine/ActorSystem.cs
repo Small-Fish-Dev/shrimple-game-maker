@@ -25,6 +25,10 @@ public class ActorSystem : GameObjectSystem
 		var allActors = Scene.GetAllComponents<ActorComponent>();
 		foreach ( var actor in allActors )
 		{
+			if ( !actor.Spawned )
+			{
+				actor.SystemSpawn( this );
+			}
 			actor.SystemTick( this );
 		}
 	}

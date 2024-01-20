@@ -8,9 +8,11 @@ namespace ShartCoding.GameMaker.Engine;
 public class ActorComponent : Component
 {
 	[Property] public ActorTemplate Template { get; private set; }
+	public bool Spawned = false;
 
 	private ActorAppearance _currentAppearance;
 	private ShartCodeContext.ContextFrame _contextFrame;
+	private ShartCodeFunction _onSpawnFunction;
 	private ShartCodeFunction _onTickFunction;
 
 	public void SystemTick( ActorSystem actorSystem )
@@ -22,6 +24,22 @@ public class ActorComponent : Component
 			_onTickFunction?.Execute( actorSystem.GameMakerComponent.GlobalContext,
 				new Dictionary<string, ShartCodeVariable>() );
 		}
+	}
+
+	public void SystemSpawn( ActorSystem actorSystem )
+	{
+		if ( Spawned )
+			return;
+        
+		Assert.NotNull( Template );
+
+		using ( actorSystem.GameMakerComponent.GlobalContext.Use( _contextFrame ) )
+		{
+			_onSpawnFunction?.Execute( actorSystem.GameMakerComponent.GlobalContext,
+				new Dictionary<string, ShartCodeVariable>() );
+		}
+
+		Spawned = true;
 	}
 
 	public void SetAppearance( ActorAppearance appearance )
@@ -41,6 +59,11 @@ public class ActorComponent : Component
 
 		_contextFrame = actorTemplate.CodeObject.GetContext();
 		_contextFrame.Variables.Add( "this", new ShartCodeVariable( "this", this ) );
+		if ( actorTemplate.CodeObject.Functions.TryGetValue( "Spawn", out var onSpawnFunction ) )
+		{
+			_onSpawnFunction = onSpawnFunction;
+		}
+
 		if ( actorTemplate.CodeObject.Functions.TryGetValue( "Tick", out var onTickFunction ) )
 		{
 			_onTickFunction = onTickFunction;

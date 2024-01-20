@@ -1,0 +1,59 @@
+﻿@using Sandbox.UI
+@namespace ShartCoding.UI.CodeTypePanels
+@inherits Sandbox.UI.Panel
+@implements ICodeTypePanel
+
+<root class="typepanel row">
+	<span class="tint-x">X: <TextEntry Numeric Text="@( $"{Vector3.x}" )" OnTextEdited="@( SetX )"></TextEntry></span>
+	<span class="tint-y">Y: <TextEntry Numeric Text="@( $"{Vector3.y}" )" OnTextEdited="@( SetY )"></TextEntry></span>
+	<span class="tint-z">Z: <TextEntry Numeric Text="@( $"{Vector3.z}" )" OnTextEdited="@( SetZ )"></TextEntry></span>
+</root>
+
+<style lang="scss">
+	Vector3Panel {
+		gap: 5px;
+		
+		span {
+			flex-direction: row;
+			flex-wrap: nowrap;
+			gap: 5px;
+			
+			padding: 5px;
+			
+			border-radius: 5px;
+		
+			&.tint-x {
+				background-color: rgba(255, 0, 0, 0.25);
+			}
+		
+			&.tint-y {
+				background-color: rgba(0, 255, 0, 0.25);
+			}
+		
+			&.tint-z {
+				background-color: rgba(0, 0, 255, 0.25);
+			}
+		}
+	}
+</style>
+
+@code {
+
+	public Vector3 Vector3 { get; set; }
+
+	private void SetX( string speedString )
+	{
+		Vector3 = Vector3.WithX( float.Parse( speedString ) );
+	}
+
+	private void SetY( string speedString )
+	{
+		Vector3 = Vector3.WithY( float.Parse( speedString ) );
+	}
+
+	private void SetZ( string speedString )
+	{
+		Vector3 = Vector3.WithZ( float.Parse( speedString ) );
+	}
+
+}

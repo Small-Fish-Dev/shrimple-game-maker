@@ -7,17 +7,9 @@
 <root class="@( FreeCam ? "" : "pointer-events" )">
 	<div class="editor window window-column @( _hidden ? "closed" : "open" )">
 		<div class="header">
-			<span style="flex-grow: 1"></span>
-			<span>TODO: iconify doesn't work</span>
+			<h4 style="flex-grow: 1">Project settings</h4>
 			<button class="play-stop square @( GameMakerComponent.Playing ? "danger" : "accent" )" onclick="@TogglePlaying">
-				@if ( GameMakerComponent.Playing )
-				{
-					<iconify icon="material-symbols:stop"/>
-				}
-				else
-				{
-					<iconify icon="material-symbols:play-arrow"/>
-				}
+				<iconify icon="@( GameMakerComponent.Playing ? "material-symbols:stop" : "material-symbols:play-arrow" )"/>
 			</button>
 			<button class="square" onclick="@( () => _hidden = !_hidden )">
 				@if ( _hidden )
@@ -40,6 +32,20 @@
 			</div>
 		</div>
 	</div>
+
+	@* TODO: make them float like real windows *@
+	@if ( !GameMakerComponent.Playing )
+	{
+		@if ( GameMakerComponent.CurrentEditorRoom != null )
+		{
+			<RoomPanel GameMakerComponent="@GameMakerComponent" Room="@GameMakerComponent.CurrentEditorRoom"/>
+		}
+		
+		@if ( GameMakerComponent.EditorCurrentSelected != null )
+		{
+			<RoomObjectPanel RoomObject="@GameMakerComponent.EditorCurrentSelected.RoomObject"/>
+		}
+	}
 </root>
 
 <style lang="scss">
@@ -52,6 +58,8 @@
 		
 		align-items: flex-start;
 		justify-content: flex-start;
+		flex-direction: column;
+		gap: 20px;
 		
 		padding: 10px;
 		
@@ -66,9 +74,9 @@
 			
 				flex-direction: row;
 				flex-wrap: nowrap;
-				
 				justify-content: flex-start;
 				align-items: stretch;
+				gap: 5px;
 			
 				height: 32px;
 				max-height: 32px;
@@ -141,6 +149,6 @@
 		GameMakerComponent.EditorRay = Scene.Camera.ScreenPixelToRay( MousePosition );
 	}
 
-	protected override int BuildHash() => HashCode.Combine( GameMakerComponent.Playing, _hidden, FreeCam );
+	protected override int BuildHash() => HashCode.Combine( GameMakerComponent.Playing, _hidden, FreeCam, GameMakerComponent.EditorCurrentSelected );
 
 }

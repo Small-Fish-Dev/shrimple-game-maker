@@ -1,4 +1,5 @@
 ﻿using System;
+using Sandbox;
 using ShartCoding.Attributes;
 using ShartCoding.GameMaker.Engine;
 using ShartCoding.ShartCode.Types;
@@ -6,10 +7,17 @@ using ShartCoding.UI.CodeBlockPanels;
 
 namespace ShartCoding.ShartCode.CodeBlocks;
 
-[ShartCodeBlock( typeof(HelloWorldPanel) )]
-public class HelloWorldBlock : ShartCodeBlock
+[ShartCodeBlock( typeof(SpinPanel) )]
+public class SpinBlock : ShartCodeBlock
 {
+	public float Speed = 100;
+	
 	private readonly ShartCodeActorReference _actorReferenceType = new();
+
+	public SpinBlock( float speed )
+	{
+		Speed = speed;
+	}
 	
 	public override void Evaluate( ShartCodeContext context )
 	{
@@ -23,10 +31,8 @@ public class HelloWorldBlock : ShartCodeBlock
 		{
 			throw new Exception($"Invalid actor");
 		}
-		
-		// TODO: replace with a Say() "native" function
-		// TODO: show a little cloud above actor's head
-		
-		Log.Info( $"{actorComponent.GameObject}: Hellorld!" );
+
+		actorComponent.Transform.Rotation =
+			actorComponent.Transform.Rotation.RotateAroundAxis( Vector3.Up, Speed * Time.Delta );
 	}
 }

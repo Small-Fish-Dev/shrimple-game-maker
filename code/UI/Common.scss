@@ -64,6 +64,8 @@ button {
   &.square {
     aspect-ratio: 1;
     min-width: 32px;
+    
+    padding: 0;
   }
 
   &:hover {
@@ -122,7 +124,57 @@ h1 {
   font-weight: bold;
 }
 
+h2 {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+h4 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.hr {
+  width: 100%;
+  
+  margin-top: 5px;
+  margin-bottom: 5px;
+  
+  border: rgb(255, 255, 255, 0.5) solid 1px;
+}
+
 .row {
   flex-direction: row;
   flex-wrap: nowrap;
+}
+
+.codeblock {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 5px;
+  
+  background-color: #518DDB;
+  color: white;
+  
+  border-radius: 5px;
+  
+  padding: 5px;
+}
+
+.typepanel {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 5px;
+
+  background-color: rgba(0, 0, 0, 0.25);
+  color: white;
+
+  border-radius: 5px;
+
+  padding: 5px;
 }

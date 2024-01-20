@@ -1,0 +1,24 @@
+﻿@using Sandbox.UI
+@namespace ShartCoding.UI.CodeTypePanels
+@inherits Sandbox.UI.Panel
+@implements ICodeTypePanel
+
+<root class="typepanel row">
+	<TextEntry Text="@Text" OnTextEdited="@( SetText )"></TextEntry>
+</root>
+
+<style lang="scss">
+	StringPanel {
+	}
+</style>
+
+@code {
+
+	public string Text { get; set; }
+
+	private void SetText( string text )
+	{
+		Text = text;
+	}
+
+}

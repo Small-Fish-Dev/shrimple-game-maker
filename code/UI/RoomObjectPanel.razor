@@ -1,0 +1,18 @@
+﻿@using ShartCoding.GameMaker
+@using ShartCoding.UI.CodeTypePanels
+@inherits Sandbox.UI.Panel
+
+<root class="window window-column">
+	<span class="row">Object name: <StringPanel Text:bind="@( RoomObject.Name )"/></span>
+	
+	<div class="hr"></div>
+	
+	<span class="row">Actor: <span>@( RoomObject.Actor.Name )</span></span>
+	<span class="row">Position: <Vector3Panel Vector3:bind="@( RoomObject.Position )"/></span>
+</root>
+
+@code {
+
+	public RoomObject RoomObject { get; set; }
+
+}

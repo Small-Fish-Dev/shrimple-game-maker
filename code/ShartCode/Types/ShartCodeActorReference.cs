@@ -4,8 +4,8 @@ using ShartCoding.UI.CodeTypePanels;
 
 namespace ShartCoding.ShartCode.Types;
 
-[ShartCodeType(typeof(ActorPanel))]
-public class ShartCodeActor : ShartCodeType
+[ShartCodeType(typeof(ActorReferencePanel))]
+public class ShartCodeActorReference : ShartCodeType
 {
 	public override object Default => null;
 
