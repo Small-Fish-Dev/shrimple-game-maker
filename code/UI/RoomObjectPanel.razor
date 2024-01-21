@@ -9,7 +9,7 @@
 		<ToggleButton Pressed:bind="@_hidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
 	</div>
 
-	<div class="body column @(_hidden ? "hidden" : "")">
+	<div class="body column @( _hidden ? "hidden" : "" )">
 		<span class="row">Object name: <StringPanel Text:bind="@( RoomObject.Name )"/></span>
 
 		<div class="hr"></div>
@@ -30,6 +30,7 @@
 
 	private bool _hidden;
 
-	protected override int BuildHash() => HashCode.Combine( _hidden, RoomObject );
+	protected override int BuildHash() => HashCode.Combine( _hidden,
+		RoomObject, RoomObject.Name, RoomObject.Actor.Name, RoomObject.Position );
 
 }
