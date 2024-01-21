@@ -63,10 +63,10 @@
 			pointer-events: all;
 		}
 		
+		overflow-y: scroll;
+		
 		/* TODO: turn into an actual windowing system */
 		> .window.editor {
-			flex-shrink: 0;
-			
 			.body {
 				flex-grow: 1;
 			
@@ -130,7 +130,9 @@
 			return;
 
 		InputFocus.Clear( null );
-		GameMakerComponent.EditorRay = Scene.Camera.ScreenPixelToRay( MousePosition );
+
+		if ( !GameMakerComponent.Playing )
+			GameMakerComponent.EditorRay = Scene.Camera.ScreenPixelToRay( MousePosition );
 	}
 
 	protected override int BuildHash() => HashCode.Combine( GameMakerComponent.Playing, _hidden, FreeCam, GameMakerComponent.EditorCurrentSelected );

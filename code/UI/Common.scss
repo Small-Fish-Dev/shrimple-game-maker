@@ -1,4 +1,10 @@
-﻿.window {
+﻿// TODO: oh shit
+
+* {
+  flex-shrink: 0;
+}
+
+.window {
   gap: 5px;
   
   padding: 20px;
