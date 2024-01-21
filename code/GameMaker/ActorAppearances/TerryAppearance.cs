@@ -6,7 +6,7 @@ namespace ShartCoding.GameMaker.ActorAppearances;
 public class TerryAppearance : ActorAppearance
 {
 	// TODO:
-	public override BBox BBox => new BBox();
+	public override BBox BBox => new();
 	
 	// TODO: citizen model, animation helper, outfit
 	

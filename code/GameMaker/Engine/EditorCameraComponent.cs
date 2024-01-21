@@ -62,7 +62,7 @@ public class EditorCameraComponent : Component
 		{
 			Transform.Position = Transform.Position.LerpTo( _targetPosition, TargetApproachRate );
 
-			if ( Transform.Position.AlmostEqual( _targetPosition ) )
+			if ( Transform.Position.AlmostEqual( _targetPosition, 1 ) )
 				Target = null;
 		}
 		else if ( Captured )
