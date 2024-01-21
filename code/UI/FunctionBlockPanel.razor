@@ -2,11 +2,12 @@
 @using System.Collections.Generic
 @using ShartCoding.Attributes
 @using ShartCoding.ShartCode
+@using ShartCoding.ShartCode.CodeBlocks
 @using ShartCoding.UI.CodeBlockPanels
 
 @inherits Sandbox.UI.Panel
 
-<root>
+<root class="column">
 	@foreach ( var block in CodeBlocks )
 	{
 		var btp = BlockToPanel( block );
@@ -14,6 +15,10 @@
 		@if ( btp == typeof(SpinPanel) )
 		{
 			<SpinPanel Block="@block"/>
+		}
+		else if ( btp == typeof(LogPanel) )
+		{
+			<LogPanel Block="@block"/>
 		}
 		else
 		{
@@ -23,6 +28,10 @@
 			</div>
 		}
 	}
+
+	<div class="block border-white row" style="gap: 10px" onclick="@( () => CodeBlocks.Add( new LogBlock( "new block" ) ) )">
+		<iconify icon="material-symbols:add"/> Add a new Log block...
+	</div>
 </root>
 
 @code {

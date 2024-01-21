@@ -1,0 +1,18 @@
+﻿@using ShartCoding.ShartCode
+@using ShartCoding.ShartCode.CodeBlocks
+@using ShartCoding.UI.CodeTypePanels
+
+@namespace ShartCoding.UI.CodeBlockPanels
+@inherits AbstractCodeBlockPanel
+
+<root class="codeblock">
+	Log
+	<span class="block typepanel">Message: <StringPanel Text:bind="@_logBlock.Message"/></span>
+</root>
+
+@code
+{
+	public override ShartCodeBlock Block { get; set; }
+
+	private LogBlock _logBlock => Block as LogBlock;
+}

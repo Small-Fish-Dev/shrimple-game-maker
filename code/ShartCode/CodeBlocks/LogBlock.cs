@@ -6,10 +6,16 @@ using ShartCoding.UI.CodeBlockPanels;
 
 namespace ShartCoding.ShartCode.CodeBlocks;
 
-[ShartCodeBlock( typeof(HelloWorldPanel) )]
-public class HelloWorldBlock : ShartCodeBlock
+[ShartCodeBlock( typeof(LogPanel) )]
+public class LogBlock : ShartCodeBlock
 {
 	private readonly ShartCodeActorReference _actorReferenceType = new();
+	public string Message { get; set; }
+
+	public LogBlock( string message = "Hellorld!" )
+	{
+		Message = message;
+	}
 	
 	public override void Evaluate( ShartCodeContext context )
 	{
@@ -27,6 +33,6 @@ public class HelloWorldBlock : ShartCodeBlock
 		// TODO: replace with a Say() "native" function
 		// TODO: show a little cloud above actor's head
 		
-		Log.Info( $"{actorComponent.GameObject}: Hellorld!" );
+		Log.Info( $"{actorComponent}: {Message}" );
 	}
 }

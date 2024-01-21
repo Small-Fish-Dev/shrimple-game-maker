@@ -51,6 +51,7 @@ public class Room
 		OnAdded?.Invoke( roomObject );
 	}
 
+	// TODO: probably should move this method to the Engine
 	public void Populate( GameObject root )
 	{
 		foreach ( var roomObject in _roomObjects )
@@ -58,6 +59,7 @@ public class Room
 			Log.Info( roomObject );
 			
 			var actor = roomObject.Actor.Make();
+			// TODO: apply the object name
 			actor.SetParent( root );
 			actor.Transform.Position = roomObject.Position;
 		}

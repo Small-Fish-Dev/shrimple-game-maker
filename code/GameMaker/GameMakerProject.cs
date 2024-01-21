@@ -50,7 +50,7 @@ public class GameMakerProject
 						{
 							"Spawn", new ShartCodeFunction( "Spawn",
 								new Dictionary<string, ShartCodeType>(),
-								new List<ShartCodeBlock> { new HelloWorldBlock() } )
+								new List<ShartCodeBlock> { new LogBlock() } )
 						},
 						{
 							"Tick", new ShartCodeFunction( "Tick",
