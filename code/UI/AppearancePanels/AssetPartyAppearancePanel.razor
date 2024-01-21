@@ -1,0 +1,19 @@
+﻿@using System
+@using ShartCoding.GameMaker
+@using ShartCoding.GameMaker.ActorAppearances
+@using ShartCoding.UI.CodeTypePanels
+@namespace ShartCoding.UI.AppearancePanels
+@inherits AbstractAppearancePanel
+
+<root class="block">
+	<div class="row">Ident: <StringPanel Text:bind="@_assetPartyAppearance.Model.Ident"/></div>
+</root>
+
+@code {
+	public override ActorAppearance Appearance { get; set; }
+
+	private AssetPartyModelAppearance _assetPartyAppearance => Appearance as AssetPartyModelAppearance;
+
+	protected override int BuildHash() => HashCode.Combine( Appearance, _assetPartyAppearance.Model );
+
+}

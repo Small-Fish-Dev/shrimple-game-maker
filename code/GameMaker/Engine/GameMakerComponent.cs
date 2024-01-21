@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Sandbox;
 using Sandbox.Diagnostics;
 using ShartCoding.ShartCode;
@@ -137,7 +138,6 @@ public class GameMakerComponent : Component
 		// TODO: make a preview object with gizmo
 		var gizmo = go.Components.Create<RoomObjectGizmoComponent>();
 		gizmo.RoomObject = roomObject;
-		roomObject.Actor.Appearance.DressGizmo( go );
 		go.SetParent( RoomPreviewStorage );
 	}
 
@@ -146,10 +146,19 @@ public class GameMakerComponent : Component
 		if ( Current is null || !Playing )
 			return;
 
-		RoomStorage.Clear();
-		room.Populate( RoomStorage );
-
 		Sun.Room = room;
+
+		RoomStorage.Clear();
+
+		try
+		{
+			room.Populate( RoomStorage );
+		}
+		catch ( Exception ex )
+		{
+			Log.Trace( ex );
+			ToEditor();
+		}
 	}
 
 	private void EditorRayTrace()

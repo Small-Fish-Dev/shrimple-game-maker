@@ -1,9 +1,13 @@
 ﻿@using System
+@using System.Collections.Generic
 @using System.Linq
 @using System.Runtime.InteropServices.Marshalling
 @using Sandbox
+@using ShartCoding.Attributes
 @using ShartCoding.GameMaker
 @using ShartCoding.GameMaker.Engine
+@using ShartCoding.ShartCode
+@using ShartCoding.UI.AppearancePanels
 @using ShartCoding.UI.CodeTypePanels
 @inherits Sandbox.UI.Panel
 
@@ -14,6 +18,32 @@
 	</div>
 
 	<div class="body column @( _hidden ? "hidden" : "" )">
+		<div class="block column">
+			<div class="header">
+				<h4 style="flex-grow: 1">Appearance</h4>
+				<ToggleButton Pressed:bind="@_appearanceHidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
+			</div>
+
+			<div class="column @( _appearanceHidden ? "hidden" : "" )">
+				@if ( true )
+				{
+					var btp = AppearanceToPanel( Actor.Appearance );
+					@* TODO: *@
+					@if ( btp == typeof(AssetPartyAppearancePanel) )
+					{
+						<AssetPartyAppearancePanel Appearance="@Actor.Appearance"/>
+					}
+					else
+					{
+						<div class="block border-white column">
+							<div>TODO: garry pls implement something like &lt;svelte:component&gt; but in razor 🙏</div>
+							<div>(can't show @btp)</div>
+						</div>
+					}
+				}
+			</div>
+		</div>
+
 		<div class="block column">
 			<div class="header">
 				<h4 style="flex-grow: 1">Functions</h4>
@@ -40,9 +70,28 @@
 
 	public ActorTemplate Actor { get; set; }
 
+	private Dictionary<Type, Type> _appearanceCache = new();
+
+	private Type AppearanceToPanel( ActorAppearance appearance )
+	{
+		var type = appearance.GetType();
+		if ( _appearanceCache.TryGetValue( type, out var panelType ) )
+		{
+			return panelType;
+		}
+
+		var panelTypeAttribute = TypeLibrary.GetAttribute<GameMakerAppearanceAttribute>( type );
+
+		var pt = panelTypeAttribute.EditorPanel
+		         ?? throw new Exception( $"Block type {type} has no associated panel via GameMakerAppearanceAttribute" );
+		_appearanceCache[type] = pt;
+		return pt;
+	}
+
 	private bool _hidden;
 	private bool _functionsHidden;
+	private bool _appearanceHidden;
 
-	protected override int BuildHash() => HashCode.Combine( _hidden, _functionsHidden, Actor );
+	protected override int BuildHash() => HashCode.Combine( _hidden, _functionsHidden, _appearanceHidden, Actor );
 
 }

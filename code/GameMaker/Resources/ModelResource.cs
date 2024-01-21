@@ -8,7 +8,7 @@ public class ModelResource : AssetPartyResource
 {
 	public Model Model { get; protected set; }
 
-	public override bool IsValid => Model is { IsError: false };
+	public override bool IsValid => base.IsValid && Model is { IsError: false };
 
 	public ModelResource( string ident ) : base( ident )
 	{

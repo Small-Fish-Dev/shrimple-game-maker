@@ -1,21 +1,34 @@
 ﻿using Sandbox;
 using Sandbox.Diagnostics;
+using ShartCoding.Attributes;
 using ShartCoding.GameMaker.Engine;
 using ShartCoding.GameMaker.Resources;
+using ShartCoding.UI.AppearancePanels;
 
 namespace ShartCoding.GameMaker.ActorAppearances;
 
+[GameMakerAppearance( typeof(AssetPartyAppearancePanel) )]
 public class AssetPartyModelAppearance : ActorAppearance
 {
-	public ModelResource Model { get; set; }
+	public ModelResource Model
+	{
+		get => _model;
+		set
+		{
+			_model = value;
 
-	private ModelRenderer _modelRenderer;
+			OnChange( this );
+		}
+	}
+
+	private ModelResource _model;
 
 	public override BBox BBox => Model.Model.RenderBounds;
 
 	public AssetPartyModelAppearance( ModelResource model )
 	{
 		Model = model;
+		Model.Change += resource => OnChange( this );
 	}
 
 	public override void Dress( ActorComponent actor )
@@ -25,21 +38,21 @@ public class AssetPartyModelAppearance : ActorAppearance
 			// TODO: not proud of this code
 			Model.Preload().Wait();
 		}
-		
+
 		Assert.True( Model.IsValid );
 
-		_modelRenderer = actor.Components.Create<ModelRenderer>();
-		_modelRenderer.Model = Model.Model;
+		var modelRenderer = actor.Components.Create<ModelRenderer>();
+		modelRenderer.Model = Model.Model;
 	}
 
 	public override void Undress( ActorComponent actor )
 	{
-		_modelRenderer?.Destroy();
+		actor.Components.Get<ModelRenderer>()?.Destroy();
 	}
 
 	public override void DressGizmo( GameObject gizmo )
 	{
-		var modelRenderer = gizmo.Components.Create<ModelRenderer>();
+		var modelRenderer = gizmo.Components.GetOrCreate<ModelRenderer>();
 		modelRenderer.Model = Model.Model;
 	}
 }
