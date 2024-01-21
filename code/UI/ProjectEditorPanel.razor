@@ -11,18 +11,7 @@
 			<button class="play-stop square @( GameMakerComponent.Playing ? "danger" : "accent" )" onclick="@TogglePlaying">
 				<iconify icon="@( GameMakerComponent.Playing ? "material-symbols:stop" : "material-symbols:play-arrow" )"/>
 			</button>
-			<button class="square" onclick="@( () => _hidden = !_hidden )">
-				@if ( _hidden )
-				{
-					<iconify icon="material-symbols:expand-content"/>
-					@*<span>Show</span>*@
-				}
-				else
-				{
-					<iconify icon="material-symbols:collapse-content"/>
-					@*<span>Hide</span>*@
-				}
-			</button>
+			<ToggleButton Pressed:bind="@_hidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
 		</div>
 		<div class="body">
 			<div class="row">
@@ -40,11 +29,11 @@
 		{
 			<RoomPanel GameMakerComponent="@GameMakerComponent" Room="@GameMakerComponent.CurrentEditorRoom"/>
 		}
-		
+
 		@if ( GameMakerComponent.EditorCurrentSelected != null )
 		{
 			<RoomObjectPanel RoomObject="@GameMakerComponent.EditorCurrentSelected.RoomObject"/>
-			
+
 			@if ( GameMakerComponent.EditorCurrentSelected.RoomObject.Actor != null )
 			{
 				<ActorPanel Actor="@GameMakerComponent.EditorCurrentSelected.RoomObject.Actor"/>
@@ -73,21 +62,7 @@
 			pointer-events: all;
 		}
   
-		.window.editor {			
-			.header {
-				flex-shrink: 0;
-			
-				flex-direction: row;
-				flex-wrap: nowrap;
-				justify-content: flex-start;
-				align-items: stretch;
-				gap: 5px;
-			
-				height: 32px;
-				max-height: 32px;
-				min-height: 32px;
-			}
-		
+		.window.editor {		
 			.body {
 				flex-grow: 1;
 			

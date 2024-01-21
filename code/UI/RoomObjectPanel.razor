@@ -1,18 +1,35 @@
-﻿@using ShartCoding.GameMaker
+﻿@using System
+@using ShartCoding.GameMaker
 @using ShartCoding.UI.CodeTypePanels
 @inherits Sandbox.UI.Panel
 
 <root class="window window-column">
-	<span class="row">Object name: <StringPanel Text:bind="@( RoomObject.Name )"/></span>
-	
-	<div class="hr"></div>
-	
-	<span class="row">Actor: <span>@( RoomObject.Actor.Name )</span></span>
-	<span class="row">Position: <Vector3Panel Vector3:bind="@( RoomObject.Position )"/></span>
+	<div class="header">
+		<h4 style="flex-grow: 1">Room Object</h4>
+		<ToggleButton Pressed:bind="@_hidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
+	</div>
+
+	<div class="body column @(_hidden ? "hidden" : "")">
+		<span class="row">Object name: <StringPanel Text:bind="@( RoomObject.Name )"/></span>
+
+		<div class="hr"></div>
+
+		<span class="row">Actor: <span>@( RoomObject.Actor.Name )</span></span>
+		<span class="row">Position: <Vector3Panel Vector3:bind="@( RoomObject.Position )"/></span>
+	</div>
 </root>
+
+<style lang="scss">
+	RoomObjectPanel {
+	}
+</style>
 
 @code {
 
 	public RoomObject RoomObject { get; set; }
+
+	private bool _hidden;
+
+	protected override int BuildHash() => HashCode.Combine( _hidden, RoomObject );
 
 }

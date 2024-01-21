@@ -1,4 +1,6 @@
 ﻿.window {
+  gap: 5px;
+  
   padding: 20px;
   border-radius: 10px;
   
@@ -40,6 +42,20 @@
     justify-content: flex-start;
     align-items: stretch;
   }
+  
+  .header {
+    flex-shrink: 0;
+
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 5px;
+
+    height: 32px;
+    max-height: 32px;
+    min-height: 32px;
+  }
 }
 
 .pointer-events .window {
@@ -47,7 +63,7 @@
   opacity: 1;
 }
 
-button {
+button, .button {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
@@ -161,6 +177,10 @@ h5 {
 .column {
   flex-direction: column;
   flex-wrap: nowrap;
+}
+
+.hidden {
+  display: none;
 }
 
 .codeblock {

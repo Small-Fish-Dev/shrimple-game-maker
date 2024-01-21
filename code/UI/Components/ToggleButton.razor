@@ -1,0 +1,32 @@
+﻿@using System
+@inherits Sandbox.UI.Panel
+
+<div class="button square @( Pressed ? "pressed" : "" )" onclick="@( () => Pressed = !Pressed )">
+	<iconify icon="@( Pressed ? IconPressed : IconReleased )"/>
+</div>
+
+@code {
+
+	public bool Pressed
+	{
+		get => _pressed;
+		set
+		{
+			_pressed = value;
+			if ( _pressed )
+				OnPressed?.Invoke();
+			else
+				OnReleased?.Invoke();
+		}
+	}
+
+	public string IconPressed { get; set; }
+	public string IconReleased { get; set; }
+	public Action OnPressed { get; set; }
+	public Action OnReleased { get; set; }
+
+	private bool _pressed;
+
+	protected override int BuildHash() => HashCode.Combine( Pressed );
+
+}
