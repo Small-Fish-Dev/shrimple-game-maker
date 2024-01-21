@@ -1,8 +1,8 @@
 {
-  "Title": "shartcoding",
+  "Title": "Shrimple Game Maker",
   "Type": "game",
-  "Org": "local",
-  "Ident": "shartcoding",
+  "Org": "fish",
+  "Ident": "sgm",
   "Tags": null,
   "Schema": 1,
   "HasAssets": true,
