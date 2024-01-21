@@ -8,7 +8,7 @@
   "HasAssets": true,
   "AssetsPath": "",
   "Resources": null,
-  "MenuResources": "*",
+  "MenuResources": "/Scenes/*\n/UI/*",
   "HasCode": true,
   "CodePath": "/code/",
   "PackageReferences": [
@@ -36,7 +36,10 @@
       "NoWarn": "1701;1702;1591;",
       "WarningsAsErrors": "",
       "AssemblyReferences": [],
-      "IgnoreFolders": [],
+      "IgnoreFolders": [
+        "editor",
+        "unittest"
+      ],
       "DistinctAssemblyReferences": []
     },
     "MapStartupScene": null,
