@@ -7,62 +7,36 @@
 
 @inherits Sandbox.UI.Panel
 
-<root class="column">
-	<h5>Function "@Function.Name"</h5>
-	<div>Arguments:</div>
-	@if ( Function.Arguments.Count > 0 )
-	{
-		@foreach ( var arg in Function.Arguments )
+<root class="block border-white column">
+	<div class="header">
+		<h5>Function "@Function.Name"</h5>
+		<ToggleButton Pressed:bind="@_hidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
+	</div>
+
+	<div class="column @( _hidden ? "hidden" : "" )">
+		<div>Arguments:</div>
+		@if ( Function.Arguments.Count > 0 )
 		{
-			<div>@arg.Key : @arg.Value</div>
-		}
-	}
-	else
-	{
-		<div>None</div>
-	}
-	<div class="hr"></div>
-	@foreach ( var block in Function.CodeBlocks )
-	{
-		var btp = BlockToPanel( block );
-		@* TODO: *@
-		@if ( btp == typeof(SpinPanel) )
-		{
-			<SpinPanel Block="@block"/>
+			@foreach ( var arg in Function.Arguments )
+			{
+				<div>@arg.Key : @arg.Value</div>
+			}
 		}
 		else
 		{
-			<div>TODO: garry pls implement something like &lt;svelte:component&gt; but in razor 🙏</div>
+			<div>None</div>
 		}
-	}
+		<div class="hr"></div>
+		<FunctionBlockPanel CodeBlocks="@( Function.CodeBlocks )"/>
+	</div>
 </root>
 
 @code {
 
 	public ShartCodeFunction Function { get; set; }
 
-	private Dictionary<Type, Type> _blockPanelCache = new();
+	private bool _hidden;
 
-	private Panel p = new Label() { Text = "penis" };
-
-	private Type BlockToPanel( ShartCodeBlock block )
-	{
-		var type = block.GetType();
-		if ( _blockPanelCache.TryGetValue( type, out var panelType ) )
-		{
-			return panelType;
-		}
-
-		var panelTypeAttribute = TypeLibrary.GetAttribute<ShartCodeBlockAttribute>( type );
-
-		var pt = panelTypeAttribute.EditorPanel
-		         ?? throw new Exception( $"Block type {type} has no associated panel via ShartCodeBlockAttribute" );
-		_blockPanelCache[type] = pt;
-		return pt;
-	}
-
-	private Panel GetPanel() => p;
-
-	protected override int BuildHash() => HashCode.Combine( Function, Function?.CodeBlocks );
+	protected override int BuildHash() => HashCode.Combine( _hidden, Function );
 
 }

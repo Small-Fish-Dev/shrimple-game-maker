@@ -1,4 +1,6 @@
 ﻿@using System
+@using System.Linq
+@using System.Runtime.InteropServices.Marshalling
 @using Sandbox
 @using ShartCoding.GameMaker
 @using ShartCoding.GameMaker.Engine
@@ -6,16 +8,31 @@
 @inherits Sandbox.UI.Panel
 
 <root class="window window-column">
-	<div class="row" style="gap: 5px">
+	<div class="header">
 		<h4 style="flex-grow: 1">Actor "@Actor.Name"</h4>
+		<ToggleButton Pressed:bind="@_hidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
 	</div>
-	
-	<FunctionPanel Function="@Actor.CodeObject.Functions["Tick"]"/>
+
+	<div class="body column @( _hidden ? "hidden" : "" )">
+		<div class="block column">
+			<div class="header">
+				<h4 style="flex-grow: 1">Functions</h4>
+				<ToggleButton Pressed:bind="@_functionsHidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
+			</div>
+
+			<div class="column @( _functionsHidden ? "hidden" : "" )">
+				@foreach ( var function in Actor.CodeObject.Functions.OrderBy( pair => pair.Key ) )
+				{
+					<FunctionPanel Function="@function.Value"/>
+				}
+			</div>
+		</div>
+	</div>
 </root>
 
 <style>
 	ActorPanel {
-		gap: 10px;
+		/*gap: 10px;*/
 	}
 </style>
 
@@ -23,6 +40,9 @@
 
 	public ActorTemplate Actor { get; set; }
 
-	protected override int BuildHash() => HashCode.Combine( Actor );
+	private bool _hidden;
+	private bool _functionsHidden;
+
+	protected override int BuildHash() => HashCode.Combine( _hidden, _functionsHidden, Actor );
 
 }

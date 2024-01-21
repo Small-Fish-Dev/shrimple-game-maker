@@ -37,6 +37,7 @@
           "RoomPreviewStorage": "5fb0d355-8ef5-4898-a059-815b8909f833",
           "RoomStorage": "5b97904b-d9c4-498e-9a6e-2935a1bf5af9",
           "Sun": "9f3106a2-d105-4d32-860b-aec7e583dab5",
+          "EditorCurrentSelected": null,
           "Playing": false
         }
       ],
@@ -58,8 +59,11 @@
           "Components": [
             {
               "__version": 0,
-              "__type": "DirectionalLight",
+              "__type": "RoomSunComponent",
               "__enabled": true,
+              "Room": null,
+              "FogMode": "Enabled",
+              "FogStrength": 1,
               "LightColor": "0.91373,0.98039,1,1",
               "Shadows": true,
               "SkyColor": "0.05882,0.07451,0.08235,1"
@@ -97,7 +101,10 @@
               "__enabled": true,
               "Captured": false,
               "FastSpeed": 40,
-              "Speed": 20
+              "Speed": 20,
+              "TargetApproachRate": 0.7,
+              "TargetCameraDistance": 30,
+              "Target": null
             }
           ]
         },

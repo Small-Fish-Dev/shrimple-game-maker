@@ -5,6 +5,9 @@ namespace ShartCoding.GameMaker.ActorAppearances;
 
 public class FlatAppearance : ActorAppearance
 {
+	// TODO:
+	public override BBox BBox => new BBox();
+
 	public override void Dress( ActorComponent actor )
 	{
 		throw new System.NotImplementedException();

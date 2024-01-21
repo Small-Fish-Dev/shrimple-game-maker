@@ -3,7 +3,7 @@
 @inherits Sandbox.UI.Panel
 @implements ICodeTypePanel
 
-<root class="typepanel row">
+<root class="block typepanel row">
 	<span class="tint-x">X: <TextEntry Numeric Text="@( $"{Vector3.x}" )" OnTextEdited="@( SetX )"></TextEntry></span>
 	<span class="tint-y">Y: <TextEntry Numeric Text="@( $"{Vector3.y}" )" OnTextEdited="@( SetY )"></TextEntry></span>
 	<span class="tint-z">Z: <TextEntry Numeric Text="@( $"{Vector3.z}" )" OnTextEdited="@( SetZ )"></TextEntry></span>
@@ -41,19 +41,19 @@
 
 	public Vector3 Vector3 { get; set; }
 
-	private void SetX( string speedString )
+	private void SetX( string value )
 	{
-		Vector3 = Vector3.WithX( float.Parse( speedString ) );
+		Vector3 = Vector3.WithX( float.Parse( value ) );
 	}
 
-	private void SetY( string speedString )
+	private void SetY( string value )
 	{
-		Vector3 = Vector3.WithY( float.Parse( speedString ) );
+		Vector3 = Vector3.WithY( float.Parse( value ) );
 	}
 
-	private void SetZ( string speedString )
+	private void SetZ( string value )
 	{
-		Vector3 = Vector3.WithZ( float.Parse( speedString ) );
+		Vector3 = Vector3.WithZ( float.Parse( value ) );
 	}
 
 }

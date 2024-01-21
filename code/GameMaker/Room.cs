@@ -26,7 +26,7 @@ public class Room
 {
 	public string Name { get; set; }
 
-	public Angles SunAngle { get; set; } = new(35, 50, 0);
+	public Angles SunAngles { get; set; } = new(35, 50, 0);
 	public Color SunlightColor { get; set; } = Color.FromRgba( 0xE9FAFFFF );
 	public Color SkyColor { get; set; } = Color.FromRgba( 0x0F1315FF );
 	public bool CastShadows { get; set; } = true;

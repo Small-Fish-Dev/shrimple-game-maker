@@ -1,4 +1,5 @@
-﻿using Sandbox;
+﻿using System.Linq;
+using Sandbox;
 using Sandbox.Diagnostics;
 using ShartCoding.ShartCode;
 
@@ -9,7 +10,7 @@ public class GameMakerComponent : Component
 	[Property] public GameObject RoomStorage;
 	[Property] public GameObject RoomPreviewStorage;
 	[Property] public bool Playing { get; private set; } = false;
-	[Property] public DirectionalLight Sun;
+	[Property] public RoomSunComponent Sun;
 	[Property] public EditorCameraComponent EditorCamera;
 	[Property] public CameraComponent GameCamera;
 
@@ -103,14 +104,6 @@ public class GameMakerComponent : Component
 		ToEditor();
 	}
 
-	protected void SetSunSettings( Room room )
-	{
-		Sun.LightColor = room.SunlightColor;
-		Sun.SkyColor = room.SkyColor;
-		Sun.Shadows = room.CastShadows;
-		Sun.Transform.Rotation = Rotation.From( room.SunAngle );
-	}
-
 	public void SetEditorRoom( Room room )
 	{
 		if ( Current is null || Playing || CurrentEditorRoom == room )
@@ -134,7 +127,7 @@ public class GameMakerComponent : Component
 		CurrentEditorRoom.OnAdded = EditorMakeRoomObjectGizmo;
 		CurrentEditorRoom.OnRemoved = null; // TODO:
 
-		SetSunSettings( CurrentEditorRoom );
+		Sun.Room = CurrentEditorRoom;
 	}
 
 	private void EditorMakeRoomObjectGizmo( RoomObject roomObject )
@@ -156,7 +149,7 @@ public class GameMakerComponent : Component
 		RoomStorage.Clear();
 		room.Populate( RoomStorage );
 
-		SetSunSettings( room );
+		Sun.Room = room;
 	}
 
 	private void EditorRayTrace()
@@ -194,15 +187,24 @@ public class GameMakerComponent : Component
 		}
 	}
 
-	public void EditorSearchRoomObject( RoomObject roomObject )
+	public RoomObjectGizmoComponent EditorSearchRoomObject( RoomObject roomObject ) => Scene
+		.GetAllComponents<RoomObjectGizmoComponent>()
+		.FirstOrDefault( ro => ro.RoomObject == roomObject );
+
+
+	public void EditorSelectRoomObject( RoomObject roomObject )
 	{
-		foreach ( var ro in Scene.GetAllComponents<RoomObjectGizmoComponent>() )
+		if ( EditorSearchRoomObject( roomObject ) is { } rogc )
 		{
-			if ( ro.RoomObject == roomObject )
-			{
-				EditorSetRoomObject( ro.GameObject );
-				return;
-			}
+			EditorSetRoomObject( rogc.GameObject );
+		}
+	}
+
+	public void EditorSetCameraTarget( RoomObject roomObject )
+	{
+		if ( EditorSearchRoomObject( roomObject ) is { } rogc )
+		{
+			EditorCamera.Target = rogc;
 		}
 	}
 }

@@ -1,0 +1,59 @@
+﻿@using Sandbox.UI
+@namespace ShartCoding.UI.CodeTypePanels
+@inherits Sandbox.UI.Panel
+@implements ICodeTypePanel
+
+<root class="block typepanel row">
+	<span class="tint-p">Pitch: <TextEntry Numeric Text="@( $"{Angles.pitch}" )" OnTextEdited="@( SetPitch )"></TextEntry></span>
+	<span class="tint-y">Yaw: <TextEntry Numeric Text="@( $"{Angles.yaw}" )" OnTextEdited="@( SetYaw )"></TextEntry></span>
+	<span class="tint-r">Roll: <TextEntry Numeric Text="@( $"{Angles.roll}" )" OnTextEdited="@( SetRoll )"></TextEntry></span>
+</root>
+
+<style lang="scss">
+	AnglesPanel {
+		gap: 5px;
+		
+		span {
+			flex-direction: row;
+			flex-wrap: nowrap;
+			gap: 5px;
+			
+			padding: 5px;
+			
+			border-radius: 5px;
+		
+			&.tint-p {
+				background-color: rgba(255, 0, 0, 0.25);
+			}
+		
+			&.tint-y {
+				background-color: rgba(0, 255, 0, 0.25);
+			}
+		
+			&.tint-r {
+				background-color: rgba(0, 0, 255, 0.25);
+			}
+		}
+	}
+</style>
+
+@code {
+
+	public Angles Angles { get; set; }
+
+	private void SetPitch( string angle )
+	{
+		Angles = Angles.WithPitch( float.Parse( angle ) );
+	}
+
+	private void SetYaw( string angle )
+	{
+		Angles = Angles.WithYaw( float.Parse( angle ) );
+	}
+
+	private void SetRoll( string angle )
+	{
+		Angles = Angles.WithRoll( float.Parse( angle ) );
+	}
+
+}

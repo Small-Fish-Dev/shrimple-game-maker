@@ -61,8 +61,11 @@
 		&.pointer-events {
 			pointer-events: all;
 		}
-  
-		.window.editor {		
+		
+		/* TODO: turn into an actual windowing system */
+		> .window.editor {
+			flex-shrink: 0;
+			
 			.body {
 				flex-grow: 1;
 			

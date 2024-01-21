@@ -7,9 +7,27 @@ public class EditorCameraComponent : Component
 	[Property] public float Speed = 10.0f;
 	[Property] public float FastSpeed = 20.0f;
 	[Property] public bool Captured = false;
+	[Property] public float TargetApproachRate = 0.7f;
+	[Property] public float TargetCameraDistance = 10.0f;
+
+	[Property]
+	public RoomObjectGizmoComponent Target
+	{
+		get => _target;
+		set
+		{
+			_target = value;
+
+			if ( _target != null )
+				_targetPosition = _target.Transform.Position + Transform.Rotation.Backward
+					* (_target.RoomObject.Actor.Appearance.BBox.Extents.Length * 2 / 3 + TargetCameraDistance);
+		}
+	}
 
 	private CameraComponent _camera;
 	private Angles _eyeAngles;
+	private RoomObjectGizmoComponent _target;
+	private Vector3 _targetPosition;
 
 	protected override void OnAwake()
 	{
@@ -40,7 +58,14 @@ public class EditorCameraComponent : Component
 		if ( Input.Released( "EditorCamCapture" ) )
 			Captured = false;
 
-		if ( Captured )
+		if ( Target != null )
+		{
+			Transform.Position = Transform.Position.LerpTo( _targetPosition, TargetApproachRate );
+
+			if ( Transform.Position.AlmostEqual( _targetPosition ) )
+				Target = null;
+		}
+		else if ( Captured )
 		{
 			var e = _eyeAngles;
 			e += Input.AnalogLook;

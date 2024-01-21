@@ -11,6 +11,8 @@ public class AssetPartyModelAppearance : ActorAppearance
 
 	private ModelRenderer _modelRenderer;
 
+	public override BBox BBox => Model.Model.RenderBounds;
+
 	public AssetPartyModelAppearance( ModelResource model )
 	{
 		Model = model;

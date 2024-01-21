@@ -6,19 +6,44 @@
 @inherits Sandbox.UI.Panel
 
 <root class="window window-column">
-	<div class="row" style="gap: 5px">
-		<h4 style="flex-grow: 1">Room</h4>
-		<button class="square" onclick="@( () => AddRoomObjectDialog() )">
-			<iconify icon="material-symbols:person-add"/>
-		</button>
+	<div class="header">
+		<h4 style="flex-grow: 1">Room "@Room.Name"</h4>
+		<ToggleButton Pressed:bind="@_hidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
 	</div>
-	<div class="room-objects">
-		@foreach ( var roomObject in Room.RoomObjects )
-		{
-			<div class="actor @( IsRoomObjectSelected( roomObject ) ? "selected" : "" )" onclick="@( () => GameMakerComponent.EditorSearchRoomObject( roomObject ) )">
-				@roomObject.Name
+
+	<div class="body column @( _hidden ? "hidden" : "" )">
+		<div class="block column">
+			<div class="header">
+				<h4 style="flex-grow: 1">Properties</h4>
+				<ToggleButton Pressed:bind="@_propertiesHidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
 			</div>
-		}
+			<div class="column @( _propertiesHidden ? "hidden" : "" )">
+				<div class="row">Name: <StringPanel Text:bind="@( Room.Name )"/></div>
+			</div>
+			<div class="column @( _propertiesHidden ? "hidden" : "" )">
+				<div class="row">Sun angle: <AnglesPanel Angles:bind="@( Room.SunAngles )"/></div>
+			</div>
+		</div>
+		<div class="block column">
+			<div class="header">
+				<h4 style="flex-grow: 1">Objects</h4>
+				<button class="square" onclick="@( () => AddRoomObjectDialog() )">
+					<iconify icon="material-symbols:person-add"/>
+				</button>
+				<ToggleButton Pressed:bind="@_objectsHidden" IconPressed="material-symbols:expand-content" IconReleased="material-symbols:collapse-content"/>
+			</div>
+			<div class="column room-objects @( _objectsHidden ? "hidden" : "" )">
+				@foreach ( var roomObject in Room.RoomObjects )
+				{
+					@* NOTE: ondblclick from HTML is called ondoubleclick in s&box *@
+					<div class="actor @( IsRoomObjectSelected( roomObject ) ? "selected" : "" )"
+					     onclick="@( () => GameMakerComponent.EditorSelectRoomObject( roomObject ) )"
+					     ondoubleclick="@( () => GameMakerComponent.EditorSetCameraTarget( roomObject ) )">
+						@roomObject.Name
+					</div>
+				}
+			</div>
+		</div>
 	</div>
 </root>
 
@@ -31,11 +56,8 @@
 		}
 	
 		.room-objects {
-			flex-direction: column;
-			flex-wrap: nowrap;
 			justify-content: flex-start;
 			align-items: stretch;
-			gap: 5px;
 		
 			.actor {
 				padding: 5px;
@@ -57,6 +79,10 @@
 	public GameMakerComponent GameMakerComponent { get; set; }
 	public Room Room { get; set; }
 
+	private bool _hidden;
+	private bool _propertiesHidden;
+	private bool _objectsHidden;
+
 	private bool IsRoomObjectSelected( RoomObject roomObject ) => GameMakerComponent.EditorCurrentSelected != null
 	                                                              && GameMakerComponent.EditorCurrentSelected.RoomObject == roomObject;
 
@@ -68,6 +94,7 @@
 			Random.Shared.FromList( GameMakerComponent.Current.Actors ) ) );
 	}
 
-	protected override int BuildHash() => HashCode.Combine( Room, GameMakerComponent.EditorCurrentSelected );
+	protected override int BuildHash() => HashCode.Combine( _hidden, _propertiesHidden, _objectsHidden,
+		Room, GameMakerComponent.EditorCurrentSelected );
 
 }

@@ -1,0 +1,52 @@
+﻿@using System
+@using System.Collections.Generic
+@using ShartCoding.Attributes
+@using ShartCoding.ShartCode
+@using ShartCoding.UI.CodeBlockPanels
+
+@inherits Sandbox.UI.Panel
+
+<root>
+	@foreach ( var block in CodeBlocks )
+	{
+		var btp = BlockToPanel( block );
+		@* TODO: *@
+		@if ( btp == typeof(SpinPanel) )
+		{
+			<SpinPanel Block="@block"/>
+		}
+		else
+		{
+			<div class="block border-white column">
+				<div>TODO: garry pls implement something like &lt;svelte:component&gt; but in razor 🙏</div>
+				<div>(can't show @btp)</div>
+			</div>
+		}
+	}
+</root>
+
+@code {
+
+	public List<ShartCodeBlock> CodeBlocks { get; set; }
+
+	private Dictionary<Type, Type> _blockPanelCache = new();
+
+	private Type BlockToPanel( ShartCodeBlock block )
+	{
+		var type = block.GetType();
+		if ( _blockPanelCache.TryGetValue( type, out var panelType ) )
+		{
+			return panelType;
+		}
+
+		var panelTypeAttribute = TypeLibrary.GetAttribute<ShartCodeBlockAttribute>( type );
+
+		var pt = panelTypeAttribute.EditorPanel
+		         ?? throw new Exception( $"Block type {type} has no associated panel via ShartCodeBlockAttribute" );
+		_blockPanelCache[type] = pt;
+		return pt;
+	}
+
+	protected override int BuildHash() => HashCode.Combine( CodeBlocks );
+
+}
